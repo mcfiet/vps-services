@@ -1,5 +1,5 @@
 services:
-  reverse-proxy:
+  app:
     image: jc21/nginx-proxy-manager
     networks:
       - frontend
