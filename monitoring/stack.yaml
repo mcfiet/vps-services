@@ -1,0 +1,43 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      - frontend
+    ports:
+      - "9090:9090" # Prometheus Web UI
+    volumes:
+      - ~/prometheus.yml:/etc/prometheus/prometheus.yml # Konfigurationsdatei einbinden
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  grafana:
+    image: grafana/grafana:latest
+    networks:
+      - frontend
+    ports:
+      - "3001:3000" # Grafana Web UI
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Setze Admin-Passwort
+    depends_on:
+      - prometheus
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  node_exporter:
+    image: prom/node-exporter:latest
+    networks:
+      - frontend
+    ports:
+      - "9100:9100" # Metriken für Prometheus
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  frontend:
+    external: true

@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s # Wie oft Metriken abgefragt werden
+
+scrape_configs:
+  - job_name: "system"
+    static_configs:
+      - targets: ["monitoring_node_exporter:9100"] # Node Exporter für Systemmetriken
